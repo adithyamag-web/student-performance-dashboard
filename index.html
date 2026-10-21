@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Student Performance Analytics Dashboard | B.Tech IT</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-mode">
+    <!-- Main App Container -->
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="brand-logo">
+                    <div class="logo-icon">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <div class="brand-text">
+                        <h2>EduPulse <span>IT</span></h2>
+                        <span class="badge-sub">Analytics Suite</span>
+                    </div>
+                </div>
+                <button class="mobile-close-btn" id="mobileSidebarClose" title="Close Sidebar">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="sidebar-project-tag">
+                <i class="fa-solid fa-microchip"></i>
+                <span>B.Tech IT Mini Project</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-label">MAIN NAVIGATION</div>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#dashboard" class="nav-link active" data-view="dashboard">
+                            <i class="fa-solid fa-chart-pie"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#students" class="nav-link" data-view="students">
+                            <i class="fa-solid fa-user-graduate"></i>
+                            <span>Student Management</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#analytics" class="nav-link" data-view="analytics">
+                            <i class="fa-solid fa-chart-line"></i>
+                            <span>Performance Analytics</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#insights" class="nav-link" data-view="insights">
+                            <i class="fa-solid fa-lightbulb"></i>
+                            <span>Student Insights</span>
+                            <span class="nav-badge" id="insightsCountBadge">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#goals" class="nav-link" data-view="goals">
+                            <i class="fa-solid fa-bullseye"></i>
+                            <span>Goal Tracker</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#top-performers" class="nav-link" data-view="top-performers">
+                            <i class="fa-solid fa-trophy"></i>
+                            <span>Top Performers</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#attendance" class="nav-link" data-view="attendance">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <span>Attendance</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#settings" class="nav-link" data-view="settings">
+                            <i class="fa-solid fa-gear"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-profile-widget">
+                    <div class="avatar-circle">
+                        <i class="fa-solid fa-chalkboard-user"></i>
+                    </div>
+                    <div class="user-meta">
+                        <strong>Faculty Portal</strong>
+                        <span>Dept of IT • Sem 5</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="main-wrapper">
+            <!-- Top Header Bar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="menu-toggle-btn" id="mobileMenuToggle" title="Open Navigation Menu">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="page-title-box">
+                        <h1 id="currentSectionTitle">Dashboard Overview</h1>
+                        <span class="sub-date" id="liveDateDisplay">Academic Session 2024-2025</span>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <!-- Quick Global Search -->
+                    <div class="global-search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="globalSearchInput" placeholder="Quick search student or roll...">
+                    </div>
+
+                    <!-- Action buttons -->
+                    <div class="header-actions">
+                        <button class="btn btn-outline" id="quickAddStudentBtn" title="Add Individual Student">
+                            <i class="fa-solid fa-user-plus"></i>
+                            <span class="btn-text">Add Student</span>
+                        </button>
+
+                        <button class="btn btn-outline" id="quickImportBtn" title="Import CSV Dataset">
+                            <i class="fa-solid fa-file-import"></i>
+                            <span class="btn-text">Import CSV</span>
+                        </button>
+
+                        <button class="btn btn-primary" id="quickExportBtn" title="Export Student Data CSV">
+                            <i class="fa-solid fa-file-export"></i>
+                            <span class="btn-text">Export CSV</span>
+                        </button>
+
+                        <!-- Theme Toggle Button -->
+                        <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Light / Dark Mode">
+                            <i class="fa-solid fa-moon" id="themeIcon"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dynamic Views Container -->
+            <main class="content-container">
+
+                <!-- VIEW 1: MAIN DASHBOARD -->
+                <section class="dashboard-view active-view" id="dashboard-view">
+                    <!-- Welcome Hero Banner -->
+                    <div class="hero-welcome-card">
+                        <div class="hero-text">
+                            <h2>Smart Academic Performance Dashboard</h2>
+                            <p>Real-time statistical evaluation, performance trend tracking, and rule-based academic intervention advisory for B.Tech Information Technology.</p>
+                        </div>
+                        <div class="hero-actions">
+                            <button class="btn btn-light" id="heroAddStudentBtn">
+                                <i class="fa-solid fa-plus"></i> New Student
+                            </button>
+                            <button class="btn btn-light-outline" id="heroViewInsightsBtn">
+                                <i class="fa-solid fa-lightbulb"></i> View Insights
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 4 Summary KPI Cards -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card card-blue">
+                            <div class="kpi-icon-wrap">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Total Students</span>
+                                <h3 class="kpi-value" id="kpiTotalStudents">0</h3>
+                                <span class="kpi-subtext"><i class="fa-solid fa-circle-check text-success"></i> Active in Batch</span>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card card-indigo">
+                            <div class="kpi-icon-wrap">
+                                <i class="fa-solid fa-chart-simple"></i>
+                            </div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Class Average Marks</span>
+                                <h3 class="kpi-value" id="kpiAverageMarks">0%</h3>
+                                <span class="kpi-subtext" id="kpiAverageMarksTrend"><i class="fa-solid fa-arrow-trend-up text-primary"></i> Across 5 Subjects</span>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card card-cyan">
+                            <div class="kpi-icon-wrap">
+                                <i class="fa-solid fa-clipboard-user"></i>
+                            </div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Attendance Rate</span>
+                                <h3 class="kpi-value" id="kpiAttendanceRate">0%</h3>
+                                <span class="kpi-subtext" id="kpiAttendanceSub"><i class="fa-solid fa-shield-halved text-success"></i> Target: ≥ 75%</span>
+                            </div>
+                        </div>
+
+                        <div class="kpi-card card-amber">
+                            <div class="kpi-icon-wrap">
+                                <i class="fa-solid fa-award"></i>
+                            </div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Top Performer</span>
+                                <h3 class="kpi-value text-truncate" id="kpiTopPerformer">None</h3>
+                                <span class="kpi-subtext" id="kpiTopScore"><i class="fa-solid fa-medal text-warning"></i> Highest Scorer</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid -->
+                    <div class="charts-split-grid">
+                        <!-- Chart 1: Subject-wise Bar Chart -->
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <div class="card-title-wrap">
+                                    <i class="fa-solid fa-chart-column text-primary"></i>
+                                    <div>
+                                        <h3>Subject-wise Average Marks</h3>
+                                        <p class="card-subtitle">Mean performance across IT core curriculum</p>
+                                    </div>
+                                </div>
+                                <span class="badge badge-primary">Curriculum Analytics</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-canvas-wrapper">
+                                    <canvas id="subjectBarChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chart 2: Grade Distribution Doughnut Chart -->
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <div class="card-title-wrap">
+                                    <i class="fa-solid fa-chart-pie text-indigo"></i>
+                                    <div>
+                                        <h3>Overall Grade Distribution</h3>
+                                        <p class="card-subtitle">Student academic tier segmentation</p>
+                                    </div>
+                                </div>
+                                <span class="badge badge-indigo">Class Demographics</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-canvas-wrapper">
+                                    <canvas id="gradeDoughnutChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Dashboard Grid -->
+                    <div class="bottom-trio-grid">
+                        <!-- Quick Top 3 Podium List -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title-wrap">
+                                    <i class="fa-solid fa-crown text-warning"></i>
+                                    <div>
+                                        <h3>Leading Students</h3>
+                                        <p class="card-subtitle">Current batch top 3 academic rankers</p>
+                                    </div>
+                                </div>
+                                <a href="#top-performers" class="link-btn" data-view="top-performers">Full Podium &rarr;</a>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="quick-top-list" id="quickTopList">
+                                    <!-- Populated via JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Urgent Attention Required -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title-wrap">
+                                    <i class="fa-solid fa-triangle-exclamation text-danger"></i>
+                                    <div>
+                                        <h3>Intervention Radar</h3>
+                                        <p class="card-subtitle">Low attendance (&lt;75%) or score (&lt;50%)</p>
+                                    </div>
+                                </div>
+                                <a href="#insights" class="link-btn" data-view="insights">All Insights &rarr;</a>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="attention-list" id="quickAttentionList">
+                                    <!-- Populated via JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Attendance Health Status -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title-wrap">
+                                    <i class="fa-solid fa-user-clock text-cyan"></i>
+                                    <div>
+                                        <h3>Attendance Health</h3>
+                                        <p class="card-subtitle">Eligibility compliance overview</p>
+                                    </div>
+                                </div>
+                                <a href="#attendance" class="link-btn" data-view="attendance">Manage &rarr;</a>
+                            </div>
+                            <div class="card-body">
+                                <div class="attendance-health-box">
+                                    <div class="health-stat">
+                                        <div class="health-circle" id="healthCircle">
+                                            <span id="healthEligiblePct">0%</span>
+                                            <small>Eligible</small>
+                                        </div>
+                                    </div>
+                                    <div class="health-breakdown">
+                                        <div class="breakdown-item">
+                                            <span class="dot dot-success"></span>
+                                            <span>Eligible (≥75%):</span>
+                                            <strong id="healthEligibleCount">0</strong>
+                                        </div>
+                                        <div class="breakdown-item">
+                                            <span class="dot dot-danger"></span>
+                                            <span>Shortage (&lt;75%):</span>
+                                            <strong id="healthShortageCount">0</strong>
+                                        </div>
+                                        <div class="alert-mini alert-warning" id="attendanceAlertNotice">
+                                            <i class="fa-solid fa-info-circle"></i>
+                                            <span>University regulations require min 75% for semester exam hall tickets.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 2: STUDENT MANAGEMENT -->
+                <section class="dashboard-view" id="students-view">
+                    <!-- Action Toolbar -->
+                    <div class="section-toolbar">
+                        <div class="toolbar-left">
+                            <h2>Student Records Directory</h2>
+                            <p>Add, edit, filter, import, and manage individual student academic data.</p>
+                        </div>
+                        <div class="toolbar-right">
+                            <button class="btn btn-primary" id="toggleAddStudentFormBtn">
+                                <i class="fa-solid fa-user-plus"></i> Add Individual Student
+                            </button>
+                            <button class="btn btn-outline" id="importCsvBtn">
+                                <i class="fa-solid fa-file-import"></i> Import CSV
+                            </button>
+                            <button class="btn btn-outline" id="exportCsvBtn">
+                                <i class="fa-solid fa-file-export"></i> Export CSV
+                            </button>
+                            <button class="btn btn-ghost text-danger" id="resetSampleDataBtn" title="Reset to standard 25 sample students">
+                                <i class="fa-solid fa-rotate-left"></i> Reset Sample Data
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Collapsible Add/Edit Individual Student Card -->
+                    <div class="card add-student-card" id="addStudentCard" style="display: none;">
+                        <div class="card-header bg-gradient-light">
+                            <div class="card-title-wrap">
+                                <i class="fa-solid fa-address-card text-primary"></i>
+                                <div>
+                                    <h3 id="formModeTitle">Add Individual Student</h3>
+                                    <p class="card-subtitle">Fill in details; total marks and percentage calculate automatically</p>
+                                </div>
+                            </div>
+                            <button class="btn-icon-close" id="closeAddStudentFormBtn" title="Close Form">
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <form id="individualStudentForm" novalidate>
+                                <input type="hidden" id="editStudentOriginalRoll" value="">
+                                
+                                <div class="form-grid-3">
+                                    <div class="form-group">
+                                        <label for="studentNameInput">Student Full Name <span class="required">*</span></label>
+                                        <div class="input-with-icon">
+                                            <i class="fa-solid fa-user"></i>
+                                            <input type="text" id="studentNameInput" placeholder="e.g. Aarav Sharma" required>
+                                        </div>
+                                        <span class="field-error" id="nameError"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="studentRollInput">Roll Number <span class="required">*</span></label>
+                                        <div class="input-with-icon">
+                                            <i class="fa-solid fa-id-badge"></i>
+                                            <input type="text" id="studentRollInput" placeholder="e.g. 21IT045" required>
+                                        </div>
+                                        <span class="field-error" id="rollError"></span>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="studentDeptInput">Department & Semester</label>
+                                        <div class="input-with-icon">
+                                            <i class="fa-solid fa-building-columns"></i>
+                                            <select id="studentDeptInput">
+                                                <option value="Information Technology">B.Tech IT - Sem 5</option>
+                                                <option value="Computer Science">B.Tech CSE - Sem 5</option>
+                                                <option value="Artificial Intelligence">B.Tech AI &amp; DS - Sem 5</option>
+                                                <option value="Electronics">B.Tech ECE - Sem 5</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="subject-marks-panel">
+                                    <h4><i class="fa-solid fa-book-open text-primary"></i> Subject-wise Marks (Max 100 Each)</h4>
+                                    <div class="form-grid-5">
+                                        <div class="form-group">
+                                            <label for="markDs">Data Structures</label>
+                                            <input type="number" id="markDs" class="subject-mark-input" min="0" max="100" placeholder="0 - 100" required>
+                                            <span class="field-error" id="markDsError"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="markDbms">DBMS</label>
+                                            <input type="number" id="markDbms" class="subject-mark-input" min="0" max="100" placeholder="0 - 100" required>
+                                            <span class="field-error" id="markDbmsError"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="markWt">Web Technologies</label>
+                                            <input type="number" id="markWt" class="subject-mark-input" min="0" max="100" placeholder="0 - 100" required>
+                                            <span class="field-error" id="markWtError"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="markOs">Operating Systems</label>
+                                            <input type="number" id="markOs" class="subject-mark-input" min="0" max="100" placeholder="0 - 100" required>
+                                            <span class="field-error" id="markOsError"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="markCn">Computer Networks</label>
+                                            <input type="number" id="markCn" class="subject-mark-input" min="0" max="100" placeholder="0 - 100" required>
+                                            <span class="field-error" id="markCnError"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Live Computation Bar -->
+                                <div class="live-calc-bar">
+                                    <div class="calc-item">
+                                        <span>Total Marks:</span>
+                                        <strong id="liveTotalDisplay">0 / 500</strong>
+                                    </div>
+                                    <div class="calc-item">
+                                        <span>Percentage:</span>
+                                        <strong id="livePercentageDisplay">0.0%</strong>
+                                    </div>
+                                    <div class="calc-item">
+                                        <span>Grade Tier:</span>
+                                        <span class="badge badge-primary" id="liveGradeDisplay">N/A</span>
+                                    </div>
+                                    <div class="calc-item form-group-inline">
+                                        <label for="studentAttendanceInput">Attendance (%): <span class="required">*</span></label>
+                                        <input type="number" id="studentAttendanceInput" min="0" max="100" placeholder="0 - 100" style="width: 100px;" required>
+                                        <span class="field-error" id="attendanceError"></span>
+                                    </div>
+                                </div>
+
+                                <div class="form-actions-row">
+                                    <button type="submit" class="btn btn-primary" id="saveStudentSubmitBtn">
+                                        <i class="fa-solid fa-floppy-disk"></i> Save Student Record
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" id="cancelStudentFormBtn">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Filter & Search Card -->
+                    <div class="card filter-bar-card">
+                        <div class="filter-flex-wrap">
+                            <div class="filter-search-box">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="tableSearchInput" placeholder="Search by student name or roll number...">
+                            </div>
+
+                            <div class="filter-select-group">
+                                <select id="filterGradeSelect" class="form-select-sm">
+                                    <option value="ALL">All Grades</option>
+                                    <option value="A+">Grade A+ (&ge;90%)</option>
+                                    <option value="A">Grade A (80-89%)</option>
+                                    <option value="B">Grade B (70-79%)</option>
+                                    <option value="C">Grade C (50-69%)</option>
+                                    <option value="F">Grade F (&lt;50%)</option>
+                                </select>
+
+                                <select id="filterStatusSelect" class="form-select-sm">
+                                    <option value="ALL">All Performance Status</option>
+                                    <option value="Outstanding">Outstanding</option>
+                                    <option value="Good">Good</option>
+                                    <option value="Needs Improvement">Needs Improvement</option>
+                                    <option value="Critical">Critical / At Risk</option>
+                                </select>
+
+                                <select id="filterAttendanceSelect" class="form-select-sm">
+                                    <option value="ALL">All Attendance</option>
+                                    <option value="ELIGIBLE">Eligible (&ge;75%)</option>
+                                    <option value="SHORTAGE">Shortage (&lt;75%)</option>
+                                </select>
+
+                                <select id="sortBySelect" class="form-select-sm">
+                                    <option value="roll_asc">Sort: Roll No (Asc)</option>
+                                    <option value="roll_desc">Sort: Roll No (Desc)</option>
+                                    <option value="marks_desc">Sort: Marks (High &rarr; Low)</option>
+                                    <option value="marks_asc">Sort: Marks (Low &rarr; High)</option>
+                                    <option value="att_desc">Sort: Attendance (High &rarr; Low)</option>
+                                    <option value="name_asc">Sort: Name (A &rarr; Z)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Student Table Card -->
+                    <div class="card table-card">
+                        <div class="table-responsive">
+                            <table class="data-table" id="studentRecordsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Roll No</th>
+                                        <th>Student Name</th>
+                                        <th>Subject Marks (DS, DBMS, WT, OS, CN)</th>
+                                        <th>Total</th>
+                                        <th>Percentage</th>
+                                        <th>Grade</th>
+                                        <th>Attendance</th>
+                                        <th>Status</th>
+                                        <th class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="studentTableBody">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-footer">
+                            <span class="records-count" id="tableRecordCountDisplay">Showing 0 students</span>
+                            <span class="table-legend">
+                                <span class="badge badge-success">A+ / A</span> High Performing
+                                <span class="badge badge-warning">B / C</span> Average
+                                <span class="badge badge-danger">F / &lt;75%</span> Needs Attention
+                            </span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 3: PERFORMANCE ANALYTICS -->
+                <section class="dashboard-view" id="analytics-view">
+                    <div class="section-toolbar">
+                        <div class="toolbar-left">
+                            <h2>Performance Analytics &amp; Deep Trends</h2>
+                            <p>Multi-dimensional analysis of subject masteries, academic distribution, and attendance correlations.</p>
+                        </div>
+                        <div class="toolbar-right">
+                            <button class="btn btn-outline" id="refreshAnalyticsBtn">
+                                <i class="fa-solid fa-arrows-rotate"></i> Refresh Charts
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Analytics Key Highlights -->
+                    <div class="analytics-metrics-row">
+                        <div class="metric-pill">
+                            <i class="fa-solid fa-star text-warning"></i>
+                            <div>
+                                <span>Highest Scoring Subject</span>
+                                <strong id="analyticHighestSubject">-</strong>
+                            </div>
+                        </div>
+                        <div class="metric-pill">
+                            <i class="fa-solid fa-circle-exclamation text-danger"></i>
+                            <div>
+                                <span>Lowest Scoring Subject</span>
+                                <strong id="analyticLowestSubject">-</strong>
+                            </div>
+                        </div>
+                        <div class="metric-pill">
+                            <i class="fa-solid fa-graduation-cap text-primary"></i>
+                            <div>
+                                <span>Distinction Rate (A+/A)</span>
+                                <strong id="analyticDistinctionRate">0%</strong>
+                            </div>
+                        </div>
+                        <div class="metric-pill">
+                            <i class="fa-solid fa-shield-virus text-indigo"></i>
+                            <div>
+                                <span>Exam Clearance Rate</span>
+                                <strong id="analyticPassRate">0%</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Analytics Charts Split -->
+                    <div class="charts-split-grid">
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <div class="card-title-wrap">
+                                    <i class="fa-solid fa-chart-column text-primary"></i>
+                                    <div>
+                                        <h3>Subject Mastery Comparison</h3>
+                                        <p class="card-subtitle">Highest, Average, and Lowest marks per subject</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-canvas-wrapper">
+                                    <canvas id="analyticsSubjectChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <div class="card-title-wrap">
+                                    <i class="fa-solid fa-chart-area text-indigo"></i>
+                                    <div>
+                                        <h3>Monthly Academic Progression</h3>
+                                        <p class="card-subtitle">Continuous internal assessment (CIA) trend</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-canvas-wrapper">
+                                    <canvas id="monthlyTrendChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="charts-split-grid">
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <div class="card-title-wrap">
+                                    <i class="fa-solid fa-bullseye text-cyan"></i>
+                                    <div>
+                                        <h3>Top Rankers vs Class Average Radar</h3>
+                                        <p class="card-subtitle">Comparative competency profile across subjects</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-canvas-wrapper">
+                                    <canvas id="comparisonRadarChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <div class="card-title-wrap">
+                                    <i class="fa-solid fa-chart-line text-emerald"></i>
+                                    <div>
+                                        <h3>Attendance vs Academic Score Correlation</h3>
+                                        <p class="card-subtitle">Scatter distribution of attendance % against marks %</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-canvas-wrapper">
+                                    <canvas id="attendanceScatterChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 4: STUDENT PERFORMANCE INSIGHTS -->
+                <section class="dashboard-view" id="insights-view">
+                    <div class="section-toolbar">
+                        <div class="toolbar-left">
+                            <h2>Smart Rule-Based Academic Insights</h2>
+                            <p>Algorithmic rule engine flagging student academic risks, weakest subjects, and personalized counseling guidance.</p>
+                        </div>
+                        <div class="toolbar-right">
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-outline active-filter-btn" data-insight-filter="ALL">All Insights</button>
+                                <button class="btn btn-sm btn-outline" data-insight-filter="CRITICAL">Critical Risks</button>
+                                <button class="btn btn-sm btn-outline" data-insight-filter="ATTENDANCE">Attendance Alert</button>
+                                <button class="btn btn-sm btn-outline" data-insight-filter="EXCELLENCE">Merit &amp; High Achievers</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Summary Rule Metrics -->
+                    <div class="insights-summary-banner">
+                        <div class="banner-stat">
+                            <i class="fa-solid fa-triangle-exclamation text-danger"></i>
+                            <div>
+                                <span class="stat-count" id="insightFailCount">0</span>
+                                <span class="stat-desc">Students Scoring &lt; 50%</span>
+                            </div>
+                        </div>
+                        <div class="banner-stat">
+                            <i class="fa-solid fa-user-xmark text-warning"></i>
+                            <div>
+                                <span class="stat-count" id="insightAttShortageCount">0</span>
+                                <span class="stat-desc">Attendance &lt; 75% Shortage</span>
+                            </div>
+                        </div>
+                        <div class="banner-stat">
+                            <i class="fa-solid fa-book-skull text-indigo"></i>
+                            <div>
+                                <span class="stat-count" id="insightWeakSubjectName">-</span>
+                                <span class="stat-desc">Batch Weakest Subject</span>
+                            </div>
+                        </div>
+                        <div class="banner-stat">
+                            <i class="fa-solid fa-medal text-success"></i>
+                            <div>
+                                <span class="stat-count" id="insightHighAchieverCount">0</span>
+                                <span class="stat-desc">High Achievers (&ge; 85%)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Insights Cards Container -->
+                    <div class="insights-cards-grid" id="insightsCardsContainer">
+                        <!-- Populated via JS -->
+                    </div>
+                </section>
+
+                <!-- VIEW 5: GOAL TRACKER -->
+                <section class="dashboard-view" id="goals-view">
+                    <div class="section-toolbar">
+                        <div class="toolbar-left">
+                            <h2>Academic Goal Tracker</h2>
+                            <p>Empower students to establish target percentages, monitor milestones, and calculate required marks.</p>
+                        </div>
+                    </div>
+
+                    <div class="goal-tracker-container">
+                        <!-- Goal Setup Card -->
+                        <div class="card goal-setup-card">
+                            <div class="card-header">
+                                <div class="card-title-wrap">
+                                    <i class="fa-solid fa-bullseye text-primary"></i>
+                                    <div>
+                                        <h3>Set or Update Student Goal</h3>
+                                        <p class="card-subtitle">Choose a student and define their target percentage</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form id="goalSettingForm">
+                                    <div class="form-grid-2">
+                                        <div class="form-group">
+                                            <label for="goalStudentSelect">Select Student</label>
+                                            <select id="goalStudentSelect" class="form-select" required>
+                                                <!-- Populated dynamically -->
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="goalTargetInput">Target Percentage (%)</label>
+                                            <div class="input-with-icon">
+                                                <i class="fa-solid fa-percent"></i>
+                                                <input type="number" id="goalTargetInput" min="50" max="100" step="0.5" placeholder="e.g. 85" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Goal Progress Preview -->
+                                    <div class="goal-preview-box" id="goalPreviewBox" style="display: none;">
+                                        <div class="preview-metrics">
+                                            <div class="metric">
+                                                <span>Current Marks:</span>
+                                                <strong id="goalCurrentMarks">0 / 500 (0%)</strong>
+                                            </div>
+                                            <div class="metric">
+                                                <span>Target Goal:</span>
+                                                <strong id="goalTargetMarks">0 / 500 (0%)</strong>
+                                            </div>
+                                            <div class="metric">
+                                                <span>Difference / Needed:</span>
+                                                <strong id="goalMarksNeeded" class="text-primary">+0 marks</strong>
+                                            </div>
+                                        </div>
+
+                                        <div class="goal-bar-wrap">
+                                            <div class="goal-bar-labels">
+                                                <span>Current Progress</span>
+                                                <span id="goalProgressPct">0%</span>
+                                            </div>
+                                            <div class="progress-bar-bg">
+                                                <div class="progress-bar-fill" id="goalProgressFill" style="width: 0%;"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="goal-advice-box" id="goalAdviceBox">
+                                            <!-- Dynamic suggestion -->
+                                        </div>
+                                    </div>
+
+                                    <div class="form-actions-row mt-3">
+                                        <button type="submit" class="btn btn-primary" id="saveGoalBtn">
+                                            <i class="fa-solid fa-bookmark"></i> Save Target Goal
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Active Goals Directory -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title-wrap">
+                                    <i class="fa-solid fa-list-check text-indigo"></i>
+                                    <div>
+                                        <h3>Active Student Target Goals</h3>
+                                        <p class="card-subtitle">Goals persisted in LocalStorage</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="table-responsive">
+                                    <table class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Roll No</th>
+                                                <th>Student Name</th>
+                                                <th>Current %</th>
+                                                <th>Target %</th>
+                                                <th>Progress</th>
+                                                <th>Marks Gap</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="goalsTableBody">
+                                            <!-- Populated dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 6: TOP PERFORMERS -->
+                <section class="dashboard-view" id="top-performers-view">
+                    <div class="section-toolbar">
+                        <div class="toolbar-left">
+                            <h2>Academic Hall of Fame</h2>
+                            <p>Celebrating top ranking students, medal winners, and academic distinctions.</p>
+                        </div>
+                        <div class="toolbar-right">
+                            <button class="btn btn-primary" id="printTopRankersBtn">
+                                <i class="fa-solid fa-certificate"></i> Generate Merit Certificate
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 3D Style Podium Container -->
+                    <div class="podium-container" id="podiumContainer">
+                        <!-- Populated via JS for Top 3 (Rank 2, Rank 1, Rank 3) -->
+                    </div>
+
+                    <!-- Top 10 Leaderboard Table -->
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <div class="card-title-wrap">
+                                <i class="fa-solid fa-ranking-star text-warning"></i>
+                                <div>
+                                    <h3>Top 10 Batch Rankers</h3>
+                                    <p class="card-subtitle">Ranked by aggregate percentage across all 5 curriculum subjects</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Rank</th>
+                                            <th>Roll No</th>
+                                            <th>Student Name</th>
+                                            <th>Total Marks</th>
+                                            <th>Percentage</th>
+                                            <th>Grade</th>
+                                            <th>Attendance</th>
+                                            <th>Honors &amp; Badges</th>
+                                            <th>Certificate</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="topPerformersTableBody">
+                                        <!-- Dynamic rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 7: ATTENDANCE MANAGEMENT -->
+                <section class="dashboard-view" id="attendance-view">
+                    <div class="section-toolbar">
+                        <div class="toolbar-left">
+                            <h2>Attendance Tracking &amp; Compliance</h2>
+                            <p>Monitor mandatory 75% attendance criteria, track present/absent logs, and identify condonation risks.</p>
+                        </div>
+                        <div class="toolbar-right">
+                            <button class="btn btn-outline" id="exportAttendanceShortageBtn">
+                                <i class="fa-solid fa-file-pdf"></i> Export Shortage List
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Attendance KPI row -->
+                    <div class="kpi-grid">
+                        <div class="kpi-card card-cyan">
+                            <div class="kpi-icon-wrap"><i class="fa-solid fa-user-check"></i></div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Average Attendance</span>
+                                <h3 class="kpi-value" id="attAvgRateDisplay">0%</h3>
+                                <span class="kpi-subtext text-success"><i class="fa-solid fa-check"></i> Batch Health</span>
+                            </div>
+                        </div>
+                        <div class="kpi-card card-blue">
+                            <div class="kpi-icon-wrap"><i class="fa-solid fa-clipboard-check"></i></div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Exam Eligible (≥75%)</span>
+                                <h3 class="kpi-value" id="attEligibleCountDisplay">0</h3>
+                                <span class="kpi-subtext text-success">Cleared for Hall Tickets</span>
+                            </div>
+                        </div>
+                        <div class="kpi-card card-amber">
+                            <div class="kpi-icon-wrap"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Shortage Alert (&lt;75%)</span>
+                                <h3 class="kpi-value" id="attShortageCountDisplay">0</h3>
+                                <span class="kpi-subtext text-danger">Requires Counseling</span>
+                            </div>
+                        </div>
+                        <div class="kpi-card card-indigo">
+                            <div class="kpi-icon-wrap"><i class="fa-solid fa-star-half-stroke"></i></div>
+                            <div class="kpi-info">
+                                <span class="kpi-label">Perfect Attendance (100%)</span>
+                                <h3 class="kpi-value" id="attPerfectCountDisplay">0</h3>
+                                <span class="kpi-subtext text-primary">Star Attendance</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Attendance Table with Quick Toggles -->
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <div class="card-title-wrap">
+                                <i class="fa-solid fa-user-check text-cyan"></i>
+                                <div>
+                                    <h3>Student Attendance Register</h3>
+                                    <p class="card-subtitle">Adjust percentage or log attendance for today's lecture</p>
+                                </div>
+                            </div>
+                            <div class="header-filters">
+                                <button class="btn btn-sm btn-outline active-filter-btn" id="attFilterAll">All</button>
+                                <button class="btn btn-sm btn-outline" id="attFilterEligible">Eligible Only</button>
+                                <button class="btn btn-sm btn-outline text-danger" id="attFilterShortage">Shortage Only</button>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="data-table" id="attendanceRegisterTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Roll No</th>
+                                            <th>Student Name</th>
+                                            <th>Current Attendance (%)</th>
+                                            <th>Compliance Status</th>
+                                            <th>Quick Daily Log</th>
+                                            <th>Modify Attendance</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="attendanceTableBody">
+                                        <!-- Dynamic Rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW 8: SETTINGS & DATA MANAGEMENT -->
+                <section class="dashboard-view" id="settings-view">
+                    <div class="section-toolbar">
+                        <div class="toolbar-left">
+                            <h2>Application Settings &amp; Data Storage</h2>
+                            <p>Configure academic thresholds, manage local browser storage, and backup datasets.</p>
+                        </div>
+                    </div>
+
+                    <div class="settings-grid">
+                        <!-- Academic Criteria Settings -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title-wrap">
+                                    <i class="fa-solid fa-sliders text-primary"></i>
+                                    <div>
+                                        <h3>Academic Thresholds</h3>
+                                        <p class="card-subtitle">College grading and attendance criteria</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form id="settingsForm">
+                                    <div class="form-group">
+                                        <label for="settingCollegeName">Institution / College Name</label>
+                                        <input type="text" id="settingCollegeName" value="Department of Information Technology" class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="settingAttendanceThreshold">Minimum Attendance Required for Exam Eligibility (%)</label>
+                                        <input type="number" id="settingAttendanceThreshold" min="50" max="90" value="75" class="form-control">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="settingPassMarks">Subject Passing Marks (out of 100)</label>
+                                        <input type="number" id="settingPassMarks" min="30" max="60" value="50" class="form-control">
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fa-solid fa-floppy-disk"></i> Save Thresholds
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- LocalStorage Management -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title-wrap">
+                                    <i class="fa-solid fa-database text-indigo"></i>
+                                    <div>
+                                        <h3>Browser Data Storage</h3>
+                                        <p class="card-subtitle">Manage records saved in LocalStorage</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="storage-stats-box">
+                                    <div class="storage-info">
+                                        <span>Current Saved Students:</span>
+                                        <strong id="settingStudentCount">0 records</strong>
+                                    </div>
+                                    <div class="storage-info">
+                                        <span>Storage Status:</span>
+                                        <span class="badge badge-success"><i class="fa-solid fa-circle-check"></i> LocalStorage Active</span>
+                                    </div>
+                                </div>
+
+                                <div class="settings-action-list mt-3">
+                                    <button class="btn btn-outline w-100 mb-2" id="backupJsonBtn">
+                                        <i class="fa-solid fa-download"></i> Backup Full Data (JSON)
+                                    </button>
+                                    
+                                    <label class="btn btn-outline w-100 mb-2" style="cursor: pointer;">
+                                        <i class="fa-solid fa-upload"></i> Restore from JSON Backup
+                                        <input type="file" id="restoreJsonInput" accept=".json" style="display: none;">
+                                    </label>
+
+                                    <button class="btn btn-outline w-100 mb-2" id="resetToDefaultBtn">
+                                        <i class="fa-solid fa-rotate-left"></i> Restore 25 Default Sample Records
+                                    </button>
+
+                                    <button class="btn btn-danger-outline w-100" id="clearAllDataBtn">
+                                        <i class="fa-solid fa-trash-can"></i> Wipe All Data &amp; Start Fresh
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ==================== MODALS ==================== -->
+
+    <!-- Modal 1: Student Details & Academic Profile -->
+    <div class="modal-backdrop" id="studentDetailsModal">
+        <div class="modal-card modal-lg">
+            <div class="modal-header">
+                <div class="modal-title-wrap">
+                    <i class="fa-solid fa-id-card-clip text-primary"></i>
+                    <div>
+                        <h3 id="modalStudentName">Student Profile</h3>
+                        <p class="modal-subtitle" id="modalStudentRoll">Roll: -</p>
+                    </div>
+                </div>
+                <button class="modal-close-btn" id="closeDetailsModalBtn" title="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body" id="modalStudentContent">
+                <!-- Rendered dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="closeDetailsModalFooterBtn">Close</button>
+                <button class="btn btn-primary" id="editFromDetailsBtn"><i class="fa-solid fa-pen"></i> Edit Student</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: CSV Import Modal with Preview -->
+    <div class="modal-backdrop" id="csvImportModal">
+        <div class="modal-card modal-lg">
+            <div class="modal-header">
+                <div class="modal-title-wrap">
+                    <i class="fa-solid fa-file-csv text-primary"></i>
+                    <div>
+                        <h3>Import Student Dataset via CSV</h3>
+                        <p class="modal-subtitle">Upload CSV file, preview records, and validate integrity</p>
+                    </div>
+                </div>
+                <button class="modal-close-btn" id="closeImportModalBtn" title="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <!-- Dropzone -->
+                <div class="csv-upload-dropzone" id="csvDropzone">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <h4>Click or drag &amp; drop student CSV file here</h4>
+                    <p>Required columns: <code>Name, Roll, DS, DBMS, WT, OS, CN, Attendance</code></p>
+                    <input type="file" id="csvFileInput" accept=".csv" style="display: none;">
+                    <button type="button" class="btn btn-outline btn-sm" id="chooseCsvFileBtn">Browse File</button>
+                </div>
+
+                <div class="sample-csv-guide mt-2">
+                    <button class="btn-link" id="downloadSampleCsvBtn">
+                        <i class="fa-solid fa-download"></i> Download Sample CSV Template
+                    </button>
+                </div>
+
+                <!-- Preview Container -->
+                <div class="csv-preview-section" id="csvPreviewSection" style="display: none;">
+                    <div class="preview-header-bar">
+                        <div class="validation-summary" id="csvValidationSummary">
+                            <!-- Populated via JS -->
+                        </div>
+                        <div class="import-mode-selector">
+                            <label><input type="radio" name="importMode" value="append" checked> Add to Existing Data</label>
+                            <label><input type="radio" name="importMode" value="replace"> Replace Existing Data</label>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive preview-table-wrap">
+                        <table class="data-table" id="csvPreviewTable">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Roll No</th>
+                                    <th>Name</th>
+                                    <th>DS</th>
+                                    <th>DBMS</th>
+                                    <th>WT</th>
+                                    <th>OS</th>
+                                    <th>CN</th>
+                                    <th>Attendance</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="csvPreviewTableBody">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelImportBtn">Cancel</button>
+                <button class="btn btn-primary" id="confirmImportBtn" disabled>
+                    <i class="fa-solid fa-check"></i> Import Students Now
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: Confirmation Dialog -->
+    <div class="modal-backdrop" id="confirmationModal">
+        <div class="modal-card modal-sm">
+            <div class="modal-header">
+                <div class="modal-title-wrap">
+                    <i class="fa-solid fa-circle-question text-warning"></i>
+                    <div>
+                        <h3 id="confirmModalTitle">Please Confirm</h3>
+                    </div>
+                </div>
+                <button class="modal-close-btn" id="closeConfirmModalBtn" title="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmModalMessage">Are you sure you want to proceed with this action?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="confirmCancelBtn">Cancel</button>
+                <button class="btn btn-danger" id="confirmOkBtn">Confirm Action</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4: Merit Certificate Preview -->
+    <div class="modal-backdrop" id="certificateModal">
+        <div class="modal-card modal-lg certificate-modal-wrap">
+            <div class="modal-header">
+                <div class="modal-title-wrap">
+                    <i class="fa-solid fa-certificate text-warning"></i>
+                    <div>
+                        <h3>Certificate of Academic Distinction</h3>
+                        <p class="modal-subtitle">Official Student Merit Recognition</p>
+                    </div>
+                </div>
+                <button class="modal-close-btn" id="closeCertModalBtn" title="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="certificate-frame" id="printableCertificate">
+                    <div class="cert-border">
+                        <div class="cert-header">
+                            <i class="fa-solid fa-graduation-cap cert-cap-icon"></i>
+                            <h2>DEPARTMENT OF INFORMATION TECHNOLOGY</h2>
+                            <h3>CERTIFICATE OF MERIT &amp; EXCELLENCE</h3>
+                        </div>
+                        <div class="cert-body">
+                            <p class="cert-intro">This academic distinction is proudly conferred upon</p>
+                            <h1 class="cert-student-name" id="certStudentName">Aarav Patel</h1>
+                            <p class="cert-roll">Roll Number: <span id="certStudentRoll">21IT001</span></p>
+                            <p class="cert-text">
+                                For demonstrating exceptional academic performance, exemplary dedication, and securing 
+                                <strong id="certRankDisplay">Rank #1</strong> in the B.Tech Information Technology curriculum 
+                                with an aggregate score of <strong id="certPercentageDisplay">94.8%</strong> and Grade <strong id="certGradeDisplay">A+</strong>.
+                            </p>
+                        </div>
+                        <div class="cert-footer">
+                            <div class="cert-sign">
+                                <div class="sign-line"></div>
+                                <span>Head of Department (IT)</span>
+                            </div>
+                            <div class="cert-seal">
+                                <i class="fa-solid fa-medal"></i>
+                                <span>VERIFIED MERIT</span>
+                            </div>
+                            <div class="cert-sign">
+                                <div class="sign-line"></div>
+                                <span>Principal / Dean Academics</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="closeCertModalFooterBtn">Close</button>
+                <button class="btn btn-primary" id="printCertBtn">
+                    <i class="fa-solid fa-print"></i> Print Certificate
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Application Script -->
+    <script src="script.js"></script>
+</body>
+</html>
